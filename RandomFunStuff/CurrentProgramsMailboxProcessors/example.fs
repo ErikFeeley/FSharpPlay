@@ -1,3 +1,5 @@
+open System
+
 // can specify generic type param on the MbP using <>
 // non function whilte true flavor
 let myFirstAgent =
@@ -22,3 +24,65 @@ let agentWithRecursion =
 ["ey"; "wat"; "cool"; "sammich"] |> List.map myFirstAgent.Post |> ignore
 
 ["will"; "this"; "be"; "in"; "order"; "i"; "think"; "it"; "might"] |> List.map agentWithRecursion.Post |> ignore
+
+type Message =
+    string * AsyncReplyChannel<string>
+
+let replyAgent =
+    MailboxProcessor<Message>.Start(fun inbox ->
+    let rec loop () =
+        async {
+            let! (message, replyChannel) =
+                inbox.Receive()
+            replyChannel.Reply
+                (String.Format
+                    ("Received message: {0}", message))
+            do! loop ()
+        }
+    loop ())
+
+replyAgent.PostAndReply(fun rc -> "Hello", rc) |> ignore
+
+let scanningAgent =
+    MailboxProcessor.Start(fun inbox ->
+        let rec loop () =
+            async {
+                do! inbox.Scan(fun hello ->
+                    match hello with
+                    | "Hello!" ->
+                        Some(async {
+                            printfn "This is a hello message!"
+                        })
+                    | _ -> None
+                )
+                let! msg = inbox.Receive()
+                printfn "Got message '%s'" msg
+                do! loop ()
+            }
+        loop ())
+
+[ "1" ; "2" ; "3" ; "4" ; "5" ; "6" ; "7" ; "8" ; "9" ; "10" ; "Hello!" ;
+"Hello!" ; "Hello!" ; "Hello!" ; "Hello!" ; "Hello!" ; "Hello!" ; "Hello!"
+; "Hello!" ; "Hello!" ]
+|> List.map scanningAgent.Post |> ignore
+
+type CoordinatorMessage =
+    | Ready
+    | RequestJob of AsyncReplyChannel<int>
+
+// well i did like that blog post.. up til
+// Coordinator was never deifned.
+
+// doing the worker () has something to do with 
+// instance memory sharing something or other
+let Worker () =
+    MailboxProcessor<bool>.Start(fun inbox ->
+        let rec loop () =
+            async {
+                let! length =
+                    Coordinator.PostAndAsyncReply
+                        (fun reply -> RequestJob(reply))
+                    do! Async.Sleep length
+                return! loop ()
+            }
+        loop ())
