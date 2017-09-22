@@ -66,6 +66,10 @@ let scanningAgent =
 ; "Hello!" ; "Hello!" ]
 |> List.map scanningAgent.Post |> ignore
 
+["1"; "2"; "3"] |> List.map scanningAgent.Post |> ignore
+
+["Hello!"; "Hello!"; "Hello!"] |> List.map scanningAgent.Post |> ignore
+
 type CoordinatorMessage =
     | Ready
     | RequestJob of AsyncReplyChannel<int>
@@ -86,3 +90,63 @@ let Worker () =
                 return! loop ()
             }
         loop ())
+
+
+let rec factorial n =
+    match n with
+    | 0 -> 1
+    | _ -> n * factorial(n-1)
+
+let rec greatestCommonFactor a b =
+    match a with
+    | a when a = 0 -> b
+    | a when a < b -> greatestCommonFactor a (b - a)
+    | _ -> greatestCommonFactor (a - b) b
+
+// computes sum of a list of ints using recursion
+let rec sumList xs =
+    match xs with
+    | [] -> 0
+    | y::ys -> y + sumList ys
+
+// makes sumlist tail recursive using helper function with result accumulator
+let rec SumListTailRecHelper accumulator xs =
+    match xs with
+    | [] -> accumulator
+    | y::ys -> SumListTailRecHelper (accumulator + y) ys
+
+let sumListTailRecursive xs = SumListTailRecHelper 0 xs
+
+printfn "sum of 1-100 is %d" (sumListTailRecursive [1..100])
+
+
+// binary tree shenanigans
+type BST<'T> =
+    | Empty
+    | Node of value:'T * list: BST<'T> * right: BST<'T>
+
+let rec exists item bst =
+    match bst with
+    | Empty -> false
+    | Node (x, left, right) ->
+        match (x, left, right) with
+        | x when x = item -> true
+        | x when x > item -> (exists item left)
+        | _ -> (exists item right)
+
+let rec insert item bst =
+    match bst with
+    | Empty -> Node(item, Empty, Empty)
+    | Node(x, left, right) as node ->
+        match (x, left, right) with
+        | x when x = item -> node
+        | x when x > item -> Node(x, insert item left, right)
+        | _ -> Node(x, left, insert item right)
+
+let rec insertWithIf item bst =
+    match bst with
+    | Empty -> Node(item, Empty, Empty)
+    | Node(x, left, right) as node ->
+        if item = x then node
+        elif item < x then Node(x, insert item left, right)
+        else Node(x, left, insert item right)
