@@ -6,6 +6,12 @@ let rec fibs n =
     | 2L -> 1L
     | n -> fibs (n - 1L) + fibs (n - 2L)
 
+let rec fibsWithResult (n: int64) (prevResult: int64): int64 =
+    match n with
+    | 1L -> 1L
+    | 2L -> 1L
+    | n -> fibsWithResult (n - 1L) prevResult + fibsWithResult (n - 2L) prevResult
+
 // memo table
 // breaking pure function a bit here
 // since we are using ref
@@ -50,6 +56,8 @@ let memoize f =
 let rec finalFibs =
     memoize <| fun n ->
         match n with
-        | 1L -> 1L
-        | 2L -> 1L
+        | n when n <= 2L -> 1L
         | n -> finalFibs (n - 1L) + finalFibs (n - 2L)
+
+[1L; 2L; 3L; 4L; 5L; 100L]
+|> List.map finalFibs
