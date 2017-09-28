@@ -3,4 +3,3 @@ let sumTwoSmallestNumbers (numbers: int64[]) =
     |> Array.sort
     |> Array.take 2
     |> Array.sum
-
