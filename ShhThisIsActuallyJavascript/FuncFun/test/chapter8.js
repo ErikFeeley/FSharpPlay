@@ -175,7 +175,9 @@ const Left = function Left(x) {
   this.value = x;
 };
 
-Left.of = x => new Left(x);
+Left.of = function leftOf(x) {
+  return new Left(x);
+};
 
 Left.prototype.map = function leftMap(f) {
   return this;
@@ -185,7 +187,9 @@ const Right = function Right(x) {
   this.value = x;
 };
 
-Right.of = x => new Right(x);
+Right.of = function rightOf(x) {
+  return new Right(x);
+};
 
 Right.prototype.map = function rightMap(f) {
   return Right.of(f(this.value));
@@ -228,3 +232,53 @@ qlog(leftRollEyeMap);
 // lets do it with either.
 
 const moment = require('moment');
+
+// getAge :: Date -> User -> Either(String, Number)
+const getAge = _.curry((now, user) => {
+  const birthDate = moment(user.birthDate, 'YYYY-MM-DD');
+  if (!birthDate.isValid()) return Left.of('Birth date could not be parsed');
+  return Right.of(now.diff(birthDate, 'years'));
+});
+
+const getAgeResult = getAge(moment(), {
+  birthDate: '2005-12-12'
+});
+console.log(getAgeResult, 'has result');
+
+const getAgeResult2 = getAge(moment(), {
+  birthDate: 'July 4, 2001'
+});
+console.log(getAgeResult2, 'has error message from Left.of');
+
+// fortune :: Number -> String
+const fortune = _.compose(_.concat('If you survive, you will be '), _.add(1));
+
+// zoltar :: User -> Either(String, _)
+const zoltar = _.compose(_.map(console.log), _.map(fortune), getAge(moment()));
+
+const zoltarResult = zoltar({
+  bDate: '2005-12-12'
+});
+qlog(zoltarResult, 'if you survie u will be... etc '); // not werk wat?
+
+const zoltarResult2 = zoltar({
+  bDate: 'balloons!'
+});
+qlog(zoltarResult2, 'eyyy');
+
+// either :: (a -> c) -> (b -> c) -> Either a  b -> c
+const bestEither = _.curry((f, g, e) => {
+  switch (e.constructor) {
+    case Left:
+      return f(e.value);
+    case Right:
+      return g(e.value);
+  }
+});
+
+// bestZoltar :: User -> _
+const bestZoltar = _.compose(console.log, bestEither(_.identity, fortune), getAge(moment()));
+
+const bestZoltarResult = bestZoltar({
+  datDate: '2005-12-12' // hmm getting birth date could not be parsed..
+});
