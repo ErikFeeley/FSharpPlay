@@ -1,0 +1,7 @@
+{
+    "extends": "airbnb-base",
+    "rules": {
+        "eol-last": "off",
+        "linebreak-style": "off"
+    }
+}
