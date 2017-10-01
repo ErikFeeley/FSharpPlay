@@ -1,8 +1,8 @@
 (* -- Fake Dependencies paket-inline
-source https://api.nuget.org/v3/index.json
+source https://nuget.org/api/v2
 
-nuget Fake.Core.Target prerelease
-nuget FSharp.Core prerelease
+nuget Fake.Core.Targets prerelease
+group Main
 -- Fake Dependencies -- *)
 
 #r @"packages/FAKE/tools/FakeLib.dll"

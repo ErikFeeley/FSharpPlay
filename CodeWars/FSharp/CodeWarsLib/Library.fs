@@ -14,7 +14,7 @@ module CodeWars =
     | 'a' | 'e' | 'i' | 'o' | 'u' -> 1
     | _ -> 0
 
-  let rec countVowels x  =   
+  let rec countVowels x  =
     match x with
     | [] -> 0
     | head :: tail -> isVowel head + countVowels tail
