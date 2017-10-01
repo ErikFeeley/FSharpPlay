@@ -22,7 +22,3 @@ const findOutlierBetter = (integers) => {
   console.log(`${prev} prev ${prevIsEven} prev is even ${curr} curr ${currIsEven} cur is even`);
   return prevIsEven && currIsEven ? prev : curr;
 });
-
-const findOutlierBest = (integers) => {
-
-};
