@@ -1,4 +1,10 @@
 source https://www.nuget.org/api/v2
 nuget Expecto
-nuget fake
-nuget FAKE.Core
+
+// [ FAKE GROUP ]
+group netcorebuild
+    source https://api.nuget.org/v3/index.json
+
+    nuget FAKE.Core prerelease
+    nuget FAKE.Core.Target prerelease
+    nuget FAKE.DotNet.Cli prerelease
