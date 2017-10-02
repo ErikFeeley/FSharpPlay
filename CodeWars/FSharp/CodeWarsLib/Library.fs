@@ -41,5 +41,20 @@ module CodeWars =
 
 
   [[1; 2]; [3; 4]; [5; 6]]
-  |> List.map (fun [a; b] -> printfn "a is %i and b is %i" a b)
+  |> List.map (fun [a; b] ->
+    match [a; b] with
+    | [age; handicap] when age > 54 && handicap > 7 -> "Senior"
+    | _ -> "Open")
   |> ignore
+
+  let howMuchILoveYou nbPetals =
+    match (nbPetals % 6) with
+    | 0 -> "not at all"
+    | 1 -> "I love you"
+    | 2 -> "a little"
+    | 3 -> "a lot"
+    | 4 -> "passionately"
+    | 5 -> "madly"
+    | _ -> "NONONONO"
+
+  
