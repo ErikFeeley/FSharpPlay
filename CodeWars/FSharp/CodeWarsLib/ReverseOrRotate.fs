@@ -1,3 +1,5 @@
+module ReverseOrRotate
+
 open System
 
 let stringContainsOnlyNumbers inputString =

@@ -1,3 +1,5 @@
+module Mumbling
+
 open System
 
 let accum (s : string) : string =

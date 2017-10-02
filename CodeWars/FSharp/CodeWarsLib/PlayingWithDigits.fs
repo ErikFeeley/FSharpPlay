@@ -1,3 +1,5 @@
+module PlayingWithDigits
+
 open System
 
 let getDigits number =

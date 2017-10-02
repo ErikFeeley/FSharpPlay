@@ -1,3 +1,5 @@
+module SumTwoLowestPositiveIntegers
+
 let sumTwoSmallestNumbers (numbers: int64[]) =
     numbers
     |> Array.sort

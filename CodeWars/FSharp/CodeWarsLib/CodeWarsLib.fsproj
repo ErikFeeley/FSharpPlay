@@ -6,6 +6,11 @@
 
   <ItemGroup>
     <Compile Include="Library.fs" />
+    <Compile Include="BuildAPileOfCubes.fs" />
+    <Compile Include="Mumbling.fs" />
+    <Compile Include="PlayingWithDigits.fs" />
+    <Compile Include="ReverseOrRotate.fs" />
+    <Compile Include="SumTwoLowestPositiveIntegers.fs" />
   </ItemGroup>
 
 </Project>
