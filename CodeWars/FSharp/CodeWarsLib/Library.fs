@@ -23,3 +23,23 @@ module CodeWars =
     str
     |> Seq.toList
     |> countVowels
+
+  // senior is a member must be 55 years old handicap greater than 7
+  // input: each inner list is info for one member which will be int: age; int: handicap
+  // first crappy attempt
+  let openOrSenior (xs: int list list) =
+    xs
+    |> Seq.map (fun x ->
+      match x with
+      | head :: tail -> if head > 54 && tail.[0] > 7 then "Senior" else "Open"
+      | _ -> "Oh")
+    |> List.ofSeq
+
+  let openOrSeniorTwo = List.map <| function
+    | [age; handicap] when age > 54 && handicap > 7 -> "Senior"
+    | _ -> "Open"
+
+
+  [[1; 2]; [3; 4]; [5; 6]]
+  |> List.map (fun [a; b] -> printfn "a is %i and b is %i" a b)
+  |> ignore
