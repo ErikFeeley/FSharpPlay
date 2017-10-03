@@ -3,7 +3,7 @@ namespace CodeWarsLib
 open System
 open System.Text.RegularExpressions
 
-module CodeWars =
+module CodeWars =  
 
   let songDecoder (song: string) =
     let replaced = ((Regex("(WUB)+")).Replace(song, " "))
@@ -39,13 +39,15 @@ module CodeWars =
     | [age; handicap] when age > 54 && handicap > 7 -> "Senior"
     | _ -> "Open"
 
-
-  [[1; 2]; [3; 4]; [5; 6]]
-  |> List.map (fun [a; b] ->
+  let testDudeGuy = List.map (fun [a; b] ->
     match [a; b] with
-    | [age; handicap] when age > 54 && handicap > 7 -> "Senior"
-    | _ -> "Open")
-  |> ignore
+      | [a; b] when a > 1 && b > 1 -> "some result"
+      | _ -> "some other result")
+
+  let magicFunctionKeywordTest = List.map <| function
+    | [a; b] when a > 1 && b > 1 -> "some result"
+    | _ -> "other result"
+
 
   let howMuchILoveYou nbPetals =
     match (nbPetals % 6) with
@@ -56,5 +58,4 @@ module CodeWars =
     | 4 -> "passionately"
     | 5 -> "madly"
     | _ -> "NONONONO"
-
   
